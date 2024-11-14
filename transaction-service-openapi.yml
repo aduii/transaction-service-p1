@@ -1,0 +1,134 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v1.0.0
+servers:
+  - url: http://localhost:49489
+    description: Localhost server
+paths:
+  /api/v1/transactions/{id}:
+    get:
+      tags:
+        - transaction-controller
+      operationId: findByTransactionId
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Transaction'
+    put:
+      tags:
+        - transaction-controller
+      operationId: updateTransaction
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Transaction'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Transaction'
+    delete:
+      tags:
+        - transaction-controller
+      operationId: deleteTransaction
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+  /api/v1/transactions:
+    get:
+      tags:
+        - transaction-controller
+      operationId: getAllTransactions
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Transaction'
+    post:
+      tags:
+        - transaction-controller
+      operationId: createTransaction
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Transaction'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Transaction'
+  /api/v1/transactions/account-id/{accountId}:
+    get:
+      tags:
+        - transaction-controller
+      operationId: getTransactionsByAccountId
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Transaction'
+components:
+  schemas:
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: string
+        accountId:
+          type: string
+        amount:
+          type: number
+          format: double
+        type:
+          type: string
+        destinationAccountId:
+          type: string
+        date:
+          type: string
+          format: date-time
+        status:
+          type: string
